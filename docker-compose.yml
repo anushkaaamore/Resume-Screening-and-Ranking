@@ -1,0 +1,73 @@
+version: '3.9'
+
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: resume_screening_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: resume_screening_system
+      MYSQL_USER: appuser
+      MYSQL_PASSWORD: apppassword
+    ports:
+      - '3306:3306'
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+
+  ml-service:
+    image: python:3.11-slim
+    container_name: resume_screening_ml_service
+    working_dir: /app
+    command: sh -c "pip install --no-cache-dir -r requirements.txt && python predict.py"
+    volumes:
+      - ./ml-service:/app
+    environment:
+      ML_SERVICE_PORT: 8000
+      ML_MODEL_PATH: /app/models/best_model.pkl
+      FLASK_DEBUG: 'false'
+    ports:
+      - '8000:8000'
+    depends_on:
+      - mysql
+
+  backend:
+    image: node:20-alpine
+    container_name: resume_screening_backend
+    working_dir: /app
+    command: sh -c "npm install && npm start"
+    volumes:
+      - ./backend:/app
+    environment:
+      NODE_ENV: production
+      PORT: 5000
+      DB_HOST: mysql
+      DB_USER: appuser
+      DB_PASSWORD: apppassword
+      DB_NAME: resume_screening_system
+      JWT_SECRET: change_me_in_production
+      FRONTEND_ORIGIN: http://localhost:3000
+      ML_SERVICE_URL: http://ml-service:8000
+    ports:
+      - '5000:5000'
+    depends_on:
+      - mysql
+      - ml-service
+
+  frontend:
+    image: node:20-alpine
+    container_name: resume_screening_frontend
+    working_dir: /app
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
+    volumes:
+      - ./frontend:/app
+    environment:
+      VITE_API_BASE_URL: http://localhost:5000/api
+    ports:
+      - '3000:3000'
+    depends_on:
+      - backend
+
+volumes:
+  mysql_data:

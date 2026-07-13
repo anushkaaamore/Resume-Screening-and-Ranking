@@ -1,0 +1,9 @@
+candidate_name,age,gender,degree,branch,college_tier,cgpa,programming_languages,skills_count,projects_count,internship_count,certification_count,hackathon_count,coding_score,communication_score,leadership_score,experience_years,shortlisted
+Ananya Sharma,22,Female,B.Tech,CSE,Tier 1,8.9,4,9,5,2,3,2,92,88,84,1,1
+Rahul Verma,23,Male,B.E.,IT,Tier 2,7.4,3,6,3,1,1,1,74,70,66,0.5,0
+Meera Iyer,21,Female,MCA,Computer Applications,Tier 1,8.6,5,10,6,2,4,3,95,90,88,1.5,1
+Arjun Das,24,Male,B.Tech,ECE,Tier 3,6.8,2,5,2,0,1,0,65,62,60,0,0
+Priya Singh,22,Female,B.Sc,Data Science,Tier 2,8.1,4,8,4,1,2,1,85,82,80,1,1
+Karan Patel,23,Male,B.E.,Mechanical,Tier 3,6.5,2,4,1,0,0,0,58,60,55,0,0
+Sneha Rao,22,Female,B.Tech,CSE,Tier 1,9.1,5,10,7,2,4,3,97,92,90,2,1
+Vikram Joshi,24,Male,BCA,Computer Applications,Tier 2,7.0,3,6,3,1,1,1,72,68,64,0.5,0
